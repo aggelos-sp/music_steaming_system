@@ -1,5 +1,10 @@
 #include "fine_grained_bst.h"
 
+void init_tree(){
+    pthread_mutex_init(&tree_lock, NULL);
+    global_root = NULL;
+}
+
 T_NODE* create_node(int songID){
     T_NODE* node = malloc(sizeof(T_NODE));
 
@@ -83,4 +88,26 @@ T_NODE* search(int songID, T_NODE* root){
         }
     }
     return NULL;
+}
+
+int remove(int songID, T_NODE* root){
+
+    pthread_mutex_lock(&tree_lock);
+    /**
+     * check if the tree is empty
+    */
+    if(global_root == NULL){
+        pthread_mutex_unlock(&tree_lock);
+        return 1;
+    }
+    /**
+     * check if we are lucky and we have to remove the root
+     * and is also the only node in the tree
+    */
+    if(root->songID == songID && root->lc == NULL && root->rc == NULL){
+        free(root);
+        global_root = NULL;
+        pthread_mutex_unlock(&tree_lock);
+        return 0;
+    }
 }

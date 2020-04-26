@@ -8,9 +8,10 @@ typedef struct bst_node {
   pthread_mutex_t lock;
 }T_NODE;
 
-T_NODE* global_root = NULL;
+T_NODE* global_root;
 pthread_mutex_t tree_lock;
 
+void init_tree();
 T_NODE* create_node(int songID);
 T_NODE* search(int songID, T_NODE* root);
 int remove(int songID, T_NODE* root);
