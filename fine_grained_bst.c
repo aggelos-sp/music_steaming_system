@@ -50,3 +50,37 @@ void instert(int songID, T_NODE* root, T_NODE* parent){
         }
     }
 }
+
+T_NODE* search(int songID, T_NODE* root){
+    if(root->songID == songID){
+        return root;
+    }else if(root->songID < songID){
+        if(root->lc == NULL){
+            pthread_mutex_unlock(&root->lock);
+            return NULL;
+        }else{
+            pthread_mutex_lock(root->lc->songID);
+            if(root->lc->songID == songID){
+                return root->lc;
+            }
+            else{
+                pthread_mutex_unlock(&root->lock);
+                return search(songID, root->lc);
+            }
+        }
+    }else{
+        if(root->rc == NULL){
+            pthread_mutex_unlock(&root->lock);
+            return NULL;
+        }else{
+            pthread_mutex_lock(&root->rc->lock);
+            if(root->rc->songID == songID){
+                return root->rc;
+            }else{
+                pthread_mutex_unlock(&root->lock);
+                return search(songID, root->rc);
+            }
+        }
+    }
+    return NULL;
+}
