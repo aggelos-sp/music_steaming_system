@@ -66,5 +66,6 @@ int main(int argc, char *argv[]){
     }
     pthread_barrier_wait(&first_b);
     first_check(NULL);
+    pthread_barrier_destroy(first_b);
     return 0;
 }
