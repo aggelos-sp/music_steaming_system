@@ -90,7 +90,7 @@ T_NODE* search(int songID, T_NODE* root){
     return NULL;
 }
 
-int remove(int songID, T_NODE* root){
+//int remove(int songID, T_NODE* root){
     
     //pthread_mutex_lock(&tree_lock);
     /**
@@ -114,5 +114,5 @@ int remove(int songID, T_NODE* root){
         return 0;
     }
     */
-    return 0;
-}
+    //return 0;
+//}
