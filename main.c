@@ -27,9 +27,9 @@ void tree_counter(T_NODE* node)
     tree_counter(node->rc); 
 } 
 void first_check(void * arg){
-    tree_counter(global_root);
     int N = number_of_threads;
     int correct_checksum = ((N*N)*(N-1)*(N+1))/2;
+    tree_counter(global_root);
     if(bst_node_number != (N * N)){
         printf(ANSI_COLOR_RED"total size check failed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET, (N*N), bst_node_number);
     }else{
@@ -43,12 +43,13 @@ void first_check(void * arg){
     
 }
 int main(int argc, char *argv[]){
-    init_tree();
+    
     if(argc != 2){
         printf("Usage: a.out <thread count>\n");
         exit(0);
     }
     int i = 0;
+    init_tree();
     number_of_threads = atoi(argv[1]);
     pthread_t thread_pool[number_of_threads];
     pthread_barrier_t first_b;
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]){
     for(i = 0; i < number_of_threads; i++){
         pthread_create(&thread_pool[i], NULL,generate_songs,i);
     }
-    pthread_barrier_wait(first_b);
+    pthread_barrier_wait(&first_b);
     first_check(NULL);
 
 }
