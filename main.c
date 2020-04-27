@@ -10,11 +10,12 @@ int bst_node_number = 0;
 int bst_checksum = 0;
 
 void* generate_songs(void *id){
+    printf("I am in\n");
     int i = 0;
     int song_id = 0;
     for(i = 0; i < number_of_threads; i++){
         song_id = ((i * number_of_threads) + (int)id);
-        printf("I am thread: %d and going to insert:%d",(int)id,song_id);
+        printf("I am thread: %d and going to insert:%d\n",(int)id,song_id);
         insert(song_id,global_root,NULL);
     }
 }
@@ -52,15 +53,18 @@ int main(int argc, char *argv[]){
         exit(0);
     }
     int i = 0;
+    printf("Init tree start\n");
     init_tree();
+    printf("Init tree end\n");
     number_of_threads = atoi(argv[1]);
-    pthread_t thread_pool[number_of_threads];
+    printf("Number of threads %d\n",number_of_threads);
+    pthread_t my_threads[number_of_threads];
     pthread_barrier_t first_b;
     pthread_barrier_init(&first_b, NULL, number_of_threads + 1);
     for(i = 0; i < number_of_threads; i++){
-        pthread_create(&thread_pool[i], NULL,(void*)generate_songs,(void*)i);
+        pthread_create(&my_threads[i], NULL,(void*)generate_songs,(void*)i);
     }
     pthread_barrier_wait(&first_b);
     first_check(NULL);
-
+    return 0;
 }
