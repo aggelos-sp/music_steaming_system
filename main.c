@@ -12,7 +12,7 @@ int bst_checksum = 0;
 void generate_songs(void *id){
     int i = 0;
     for(i = 0; i < number_of_threads; i++){
-        instert(((i * number_of_threads) + (int)id),global_root,NULL);
+        insert(((i * number_of_threads) + (int)id),global_root,NULL);
     }
 }
 void tree_counter(T_NODE* node) 

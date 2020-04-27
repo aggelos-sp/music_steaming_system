@@ -15,4 +15,4 @@ pthread_mutex_t tree_lock;
 void init_tree();
 T_NODE* create_node(int songID);
 T_NODE* search(int songID, T_NODE* root);
-void instert(int songID, T_NODE* root, T_NODE* parent);
+void insert(int songID, T_NODE* root, T_NODE* parent);
