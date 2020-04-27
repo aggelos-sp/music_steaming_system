@@ -42,7 +42,7 @@ void first_check(void * arg){
         printf(ANSI_COLOR_GREEN"total size check passed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET, (N*N), bst_node_number);
     }
     if(bst_checksum != correct_checksum){
-        printf("total keysum check failed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET,correct_checksum,bst_checksum);
+        printf(ANSI_COLOR_RED"total keysum check failed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET,correct_checksum,bst_checksum);
     }else{
         printf(ANSI_COLOR_GREEN"total keysum check passed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET,correct_checksum,bst_checksum);
     }
