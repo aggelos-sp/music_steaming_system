@@ -64,7 +64,7 @@ T_NODE* search(int songID, T_NODE* root){
             pthread_mutex_unlock(&root->lock);
             return NULL;
         }else{
-            pthread_mutex_lock(root->lc->songID);
+            pthread_mutex_lock(&root->lc->songID);
             if(root->lc->songID == songID){
                 return root->lc;
             }
