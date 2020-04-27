@@ -21,7 +21,7 @@ T_NODE* create_node(int songID){
     return node;
 }
 
-void instert(int songID, T_NODE* root, T_NODE* parent){
+void insert(int songID, T_NODE* root, T_NODE* parent){
     if(parent == NULL){
         pthread_mutex_lock(&tree_lock);
         if(global_root == NULL){
@@ -51,7 +51,7 @@ void instert(int songID, T_NODE* root, T_NODE* parent){
         }else{
             pthread_mutex_lock(&root->rc->lock);
             pthread_mutex_unlock(&root->lock);
-            instert(songID, root->rc, root);
+            insert(songID, root->rc, root);
         }
     }
 }
@@ -64,7 +64,7 @@ T_NODE* search(int songID, T_NODE* root){
             pthread_mutex_unlock(&root->lock);
             return NULL;
         }else{
-            pthread_mutex_lock(&root->lc->songID);
+            pthread_mutex_lock(&root->lc->lock);
             if(root->lc->songID == songID){
                 return root->lc;
             }
