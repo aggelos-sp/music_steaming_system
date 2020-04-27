@@ -65,7 +65,9 @@ int main(int argc, char *argv[]){
     for(i = 0; i < number_of_threads; i++){
         pthread_create(&my_threads[i], NULL,(void*)generate_songs,(void*)i);
     }
-    
+    for(i = 0; i < number_of_threads; i++){
+        pthread_join(my_threads[i],NULL);
+    }
     first_check(NULL);
     pthread_barrier_destroy(&first_b);
     return 0;
