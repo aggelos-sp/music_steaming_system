@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
     number_of_threads = atoi(argv[1]);
     pthread_t thread_pool[number_of_threads];
     pthread_barrier_t first_b;
-    pthread_barrier_init(&first_b, NULL, number_of_threads);
+    pthread_barrier_init(&first_b, NULL, number_of_threads + 1);
     for(i = 0; i < number_of_threads; i++){
         pthread_create(&thread_pool[i], NULL,generate_songs,i);
     }
