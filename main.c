@@ -8,6 +8,7 @@
 int number_of_threads = 0;
 int bst_node_number = 0;
 int bst_checksum = 0;
+pthread_barrier_t first_b;
 
 void* generate_songs(void *id){
     printf("I am in\n");
@@ -18,6 +19,7 @@ void* generate_songs(void *id){
         printf("I am thread: %d and going to insert:%d\n",(int)id,song_id);
         insert(song_id,global_root,NULL);
     }
+    pthread_barrier_wait(&first_b);
 }
 void tree_counter(T_NODE* node) 
 { 
@@ -59,12 +61,11 @@ int main(int argc, char *argv[]){
     number_of_threads = atoi(argv[1]);
     printf("Number of threads %d\n",number_of_threads);
     pthread_t my_threads[number_of_threads];
-    pthread_barrier_t first_b;
-    pthread_barrier_init(&first_b, NULL, number_of_threads + 1);
+    pthread_barrier_init(&first_b, NULL, number_of_threads);
     for(i = 0; i < number_of_threads; i++){
         pthread_create(&my_threads[i], NULL,(void*)generate_songs,(void*)i);
     }
-    pthread_barrier_wait(&first_b);
+    
     first_check(NULL);
     pthread_barrier_destroy(&first_b);
     return 0;
