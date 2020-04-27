@@ -91,7 +91,7 @@ T_NODE* search(int songID, T_NODE* root){
 }
 
 int remove(int songID, T_NODE* root){
-
+    /*
     pthread_mutex_lock(&tree_lock);
     /**
      * check if the tree is empty
@@ -110,4 +110,6 @@ int remove(int songID, T_NODE* root){
         pthread_mutex_unlock(&tree_lock);
         return 0;
     }
+    */
+    return 0;
 }
