@@ -28,3 +28,27 @@ void init_queues(int M){
         pthread_mutex_init(&my_queues[i]->tail_lock, NULL);
     }
 }
+
+void enqueue(int songID, int select){
+    Q_NODE* new_node = create_queue_node(songID);
+    pthread_mutex_lock(&my_queues[select]->tail_lock);
+    my_queues[select]->tail->next = new_node;
+    my_queues[select]->tail = new_node;
+    pthread_mutex_unlock(&my_queues[select]->tail_lock);
+}
+
+int dequeue(int select){
+    int to_return = -2;
+
+    pthread_mutex_lock(&my_queues[select]->head_lock);
+
+    if(my_queues[select]->head->next == NULL){
+        printf(ANSI_COLOR_RED"Trying to dequeue from empty queue.\n"ANSI_COLOR_RESET);
+    }else{
+        to_return = my_queues[select]->head->next->songID;
+        my_queues[select]->head = my_queues[select]->head->next;
+    }
+
+    pthread_mutex_unlock(&my_queues[select]->head_lock);
+    return to_return;
+}
