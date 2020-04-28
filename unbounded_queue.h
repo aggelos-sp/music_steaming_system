@@ -21,3 +21,4 @@ QUEUE *my_queues;
 void init_queues(int M);
 void enqueue(int songID, int select);
 int dequeue(int select);
+Q_NODE create_queue_node(int songID);
