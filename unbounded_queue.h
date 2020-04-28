@@ -1,6 +1,8 @@
 #include <pthread.h>
 #include <stdlib.h>
-
+#include <stdio.h>
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 typedef struct queue_node {
   int songID; 
   struct queue_node *next;
