@@ -5,7 +5,7 @@ void init_tree(){
     global_root = NULL;
 }
 
-T_NODE* create_node(int songID){
+T_NODE* create_tree_node(int songID){
     T_NODE* node = malloc(sizeof(T_NODE));
 
     if(node == NULL){
@@ -25,7 +25,7 @@ void insert(int songID, T_NODE* root, T_NODE* parent){
     if(parent == NULL){
         pthread_mutex_lock(&tree_lock);
         if(global_root == NULL){
-            global_root = create_node(songID);
+            global_root = create_tree_node(songID);
             pthread_mutex_unlock(&tree_lock);
             return;
         }
@@ -36,7 +36,7 @@ void insert(int songID, T_NODE* root, T_NODE* parent){
     //id < current id so go left
     if(songID < root->songID){
         if(root->lc == NULL){
-            root->lc = create_node(songID);
+            root->lc = create_tree_node(songID);
             pthread_mutex_unlock(&root->lock);
         }else{
             pthread_mutex_lock(&root->lc->lock);
@@ -46,7 +46,7 @@ void insert(int songID, T_NODE* root, T_NODE* parent){
     //id > current id so go right
     }else {
         if(root->rc == NULL){
-            root->rc = create_node(songID);
+            root->rc = create_tree_node(songID);
             pthread_mutex_unlock(&root->lock);
         }else{
             pthread_mutex_lock(&root->rc->lock);
