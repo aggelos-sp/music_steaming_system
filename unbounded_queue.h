@@ -16,9 +16,9 @@ typedef struct unbounded_queue {
     pthread_mutex_t tail_lock;
 }QUEUE;
 
-QUEUE *my_queues;
+QUEUE** my_queues;
 
 void init_queues(int M);
 void enqueue(int songID, int select);
 int dequeue(int select);
-Q_NODE create_queue_node(int songID);
+Q_NODE* create_queue_node(int songID);
