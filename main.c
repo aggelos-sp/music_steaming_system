@@ -12,7 +12,6 @@ pthread_barrier_t first_barrier;
 pthread_barrier_t second_barrier;
 
 void* first(void *id){
-    printf("I am in\n");
     int i = 0;
     int song_id = 0;
     for(i = 0; i < number_of_threads; i++){
@@ -52,7 +51,6 @@ void* first_check(void * arg){
 }
 
 void* second(void* arg){
-    printf("I am in second...\n");
     int N = number_of_threads;
     int id = (int) arg;
     int i = 0;
@@ -121,7 +119,6 @@ int main(int argc, char *argv[]){
     }
     pthread_create(&my_threads[0], NULL, first_check, NULL);
     pthread_join(my_threads[0], NULL);
-    //first_check(NULL);
     for(i = 0; i < number_of_threads; i++){
         pthread_create(&my_threads[i], NULL, second,(void*)i);
     }
@@ -130,7 +127,6 @@ int main(int argc, char *argv[]){
     }
     pthread_create(&my_threads[0], NULL, second_check, NULL);
     pthread_join(my_threads[0], NULL);
-    //second_check(NULL);
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
     return 0;
