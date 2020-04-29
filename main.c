@@ -56,7 +56,9 @@ void* second(void* arg){
     int i = 0;
     int result = -1;
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
+        printf("I am thread %d and starting search",id);
         result = search(i, global_root, NULL);
+        printf("I am thread %d and stopped search",id);
         if(result >= 0){
             printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result);
         }
