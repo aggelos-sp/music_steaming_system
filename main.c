@@ -89,6 +89,7 @@ int main(int argc, char *argv[]){
     }
     first_check(NULL);
     for(i = 0; i < number_of_threads; i++){
+        printf("Trying to start tid:%d\n",i);
         pthread_create(&my_threads[i], NULL, second,(void*)i);
     }
     for(i = 0; i < number_of_threads; i++){
