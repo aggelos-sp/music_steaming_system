@@ -50,6 +50,7 @@ void first_check(void * arg){
     }
     
 }
+
 void* second(void* arg){
     int N = number_of_threads;
     int id = (int) arg;
@@ -67,6 +68,7 @@ void* second(void* arg){
     pthread_barrier_wait(&second_barrier);
     return NULL;
 }
+
 int main(int argc, char *argv[]){
     int i = 0;
     if(argc != 2){
@@ -78,6 +80,7 @@ int main(int argc, char *argv[]){
     printf("Number of threads %d\n",number_of_threads);
     init_queues(number_of_threads/2);
     pthread_t my_threads[number_of_threads];
+    pthread_t tids[number_of_threads];
     /*Init barriers*/
     pthread_barrier_init(&first_barrier, NULL, number_of_threads);
     pthread_barrier_init(&second_barrier, NULL, number_of_threads);
@@ -91,11 +94,11 @@ int main(int argc, char *argv[]){
     first_check(NULL);
     for(i = 0; i < number_of_threads; i++){
         printf("Trying to start tid:%d\n",i);
-        pthread_create(&my_threads[i], NULL, second,(void*)i);
+        pthread_create(&tids[i], NULL, second,(void*)i);
         printf("Started tid:%d\n",i);
     }
     for(i = 0; i < number_of_threads; i++){
-        pthread_join(my_threads[i],NULL);
+        pthread_join(tids[i],NULL);
     }
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
