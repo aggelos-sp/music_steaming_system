@@ -84,7 +84,7 @@ void* second_check(void* arg){
         }
     }
     printf("Nodes = %d.\n", nodes_found);
-    printf("Check = &d.\n", checksum);
+    printf("Check = %d.\n", checksum);
     return NULL;
 }
 
@@ -116,6 +116,7 @@ int main(int argc, char *argv[]){
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
     }
+    second_check(NULL);
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
     return 0;
