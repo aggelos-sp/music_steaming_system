@@ -70,6 +70,24 @@ void* second(void* arg){
     return NULL;
 }
 
+void* second_check(void* arg){
+    int i = 0;
+    Q_NODE* tmp = NULL;
+    int nodes_found = 0;
+    int checksum = 0;
+    for(i = 0; i < number_of_threads/2; i++){
+        tmp = my_queues[i]->head;
+        while(tmp != NULL){
+            nodes_found += 1;
+            checksum += tmp->songID;
+            tmp = tmp->next;
+        }
+    }
+    printf("Nodes = %d.\n", nodes_found);
+    printf("Check = &d.\n", checksum);
+    return NULL;
+}
+
 int main(int argc, char *argv[]){
     int i = 0;
     if(argc != 2){
