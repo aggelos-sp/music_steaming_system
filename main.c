@@ -11,7 +11,7 @@ int bst_checksum = 0;
 pthread_barrier_t first_barrier;
 pthread_barrier_t second_barrier;
 
-void* generate_songs(void *id){
+void* first(void *id){
     printf("I am in\n");
     int i = 0;
     int song_id = 0;
@@ -49,7 +49,19 @@ void first_check(void * arg){
     }
     
 }
-
+void* second(void* arg){
+    int N = number_of_threads;
+    int id = (int) arg;
+    int i = 0;
+    int result = -1;
+    for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
+        result = search(i, global_root, NULL);
+        if(result >= 0){
+            printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result);
+        }
+    }
+    pthread_barrier_wait(&second_barrier);
+}
 int main(int argc, char *argv[]){
     int i = 0;
     if(argc != 2){
@@ -66,12 +78,18 @@ int main(int argc, char *argv[]){
     pthread_barrier_init(&second_barrier, NULL, number_of_threads);
     /*Start thread for tree insertion*/
     for(i = 0; i < number_of_threads; i++){
-        pthread_create(&my_threads[i], NULL,(void*)generate_songs,(void*)i);
+        pthread_create(&my_threads[i], NULL,(void*)first,(void*)i);
     }
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
     }
     first_check(NULL);
+    for(i = 0; i < number_of_threads; i++){
+        pthread_create(&my_threads[i], NULL, (void*)second,(void*)i);
+    }
+    for(i = 0; i < number_of_threads; i++){
+        pthread_join(my_threads[i],NULL);
+    }
     pthread_barrier_destroy(&first_barrier);
     pthread_attr_destroy(&second_barrier);
     return 0;
