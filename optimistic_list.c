@@ -9,6 +9,7 @@ L_NODE* create_list_node(int songID){
     node->songID = songID;
     node->next = NULL;
     pthread_mutex_init(&node->lock);
+    return node;
 }
 
 int validate(L_NODE* pred, L_NODE* curr){
