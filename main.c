@@ -104,7 +104,8 @@ int main(int argc, char *argv[]){
     }
     init_tree();
     number_of_threads = atoi(argv[1]);
-    printf("Number of threads %d\n",number_of_threads);
+    printf("Number of threads : %d\n",number_of_threads);
+    printf("---------------First Phase---------------\n");
     init_queues(number_of_threads/2);
     pthread_t my_threads[number_of_threads];
     /*Init barriers*/
@@ -119,6 +120,7 @@ int main(int argc, char *argv[]){
     }
     pthread_create(&my_threads[0], NULL, first_check, NULL);
     pthread_join(my_threads[0], NULL);
+    printf("--------------Second Phase---------------\n");
     for(i = 0; i < number_of_threads; i++){
         pthread_create(&my_threads[i], NULL, second,(void*)i);
     }
@@ -127,6 +129,7 @@ int main(int argc, char *argv[]){
     }
     pthread_create(&my_threads[0], NULL, second_check, NULL);
     pthread_join(my_threads[0], NULL);
+    printf("---------------Third Phase---------------\n");
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
     return 0;
