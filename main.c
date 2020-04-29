@@ -60,9 +60,8 @@ void* second(void* arg){
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
         printf("I am thread %d and starting to search (%d)..\n",id, i);
         result = delete_util(i, global_root);
-        pthread_mutex_unlock(&result->lock);
-        if(result->p != NULL)
-        pthread_mutex_unlock(&result->p->lock);
+        //pthread_mutex_unlock(&result->lock);
+        //pthread_mutex_unlock(&result->p->lock);
         printf("I am thread %d and stopped search\n",id);
         if(result != 0){
             printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result->songID);
