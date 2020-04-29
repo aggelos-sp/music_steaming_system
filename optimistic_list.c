@@ -8,7 +8,7 @@ L_NODE* create_list_node(int songID){
     }
     node->songID = songID;
     node->next = NULL;
-    pthread_mutex_init(&node->lock);
+    pthread_mutex_init(&node->lock, NULL);
     return node;
 }
 
