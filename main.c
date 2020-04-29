@@ -52,7 +52,7 @@ void first_check(void * arg){
 }
 
 void* second(void* arg){
-    printf("I am in second...");
+    printf("I am in second...\n");
     int N = number_of_threads;
     int id = (int) arg;
     int i = 0;

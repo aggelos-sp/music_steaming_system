@@ -67,7 +67,7 @@ int search(int songID, T_NODE* root, T_NODE* parent){
         }
         pthread_mutex_lock(&global_root->lock);
         node = global_root;
-        pthread_mutex_lock(&tree_lock);
+        pthread_mutex_unlock(&tree_lock);
     }
 
     if(node->songID < songID){
