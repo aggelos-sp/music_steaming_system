@@ -21,6 +21,7 @@ void* first(void *id){
         insert(song_id,global_root,NULL);
     }
     pthread_barrier_wait(&first_barrier);
+    return NULL;
 }
 void tree_counter(T_NODE* node) 
 { 
@@ -61,6 +62,7 @@ void* second(void* arg){
         }
     }
     pthread_barrier_wait(&second_barrier);
+    return NULL;
 }
 int main(int argc, char *argv[]){
     int i = 0;
@@ -78,14 +80,14 @@ int main(int argc, char *argv[]){
     pthread_barrier_init(&second_barrier, NULL, number_of_threads);
     /*Start thread for tree insertion*/
     for(i = 0; i < number_of_threads; i++){
-        pthread_create(&my_threads[i], NULL,(void*)first,(void*)i);
+        pthread_create(&my_threads[i], NULL,first,(void*)i);
     }
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
     }
     first_check(NULL);
     for(i = 0; i < number_of_threads; i++){
-        pthread_create(&my_threads[i], NULL, (void*)second,(void*)i);
+        pthread_create(&my_threads[i], NULL, second,(void*)i);
     }
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
