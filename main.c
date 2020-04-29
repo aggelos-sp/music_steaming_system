@@ -91,6 +91,7 @@ int main(int argc, char *argv[]){
     for(i = 0; i < number_of_threads; i++){
         printf("Trying to start tid:%d\n",i);
         pthread_create(&my_threads[i], NULL, second,(void*)i);
+        printf("Started tid:%d\n",i);
     }
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
