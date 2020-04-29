@@ -17,7 +17,7 @@ typedef struct list_node {
   pthread_mutex_t lock;
 }L_NODE;
 
-L_NODE* list_head;
+LIST* my_list;
 pthread_mutex_t list_lock;
 
 void list_init();
