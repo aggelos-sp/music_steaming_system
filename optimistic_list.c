@@ -32,12 +32,12 @@ int insert_list(int songID){
     L_NODE* curr;
     L_NODE* new_node;
     int result;
-    int return_flag = false;
+    int return_flag = false;/*
     if(my_list->head == NULL){
         pthread_mutex_lock(&list_lock);
         my_list->head = create_list_node(songID);
         pthread_mutex_unlock(&list_lock);
-    }
+    }*/
     while(true){
         pred = my_list->head;
         curr = pred->next;
@@ -68,6 +68,11 @@ int insert_list(int songID){
 }
 
 void init_list(){
+    my_list = malloc(sizeof(LIST));
+    if(my_list == NULL){
+        printf(ANSI_COLOR_RED"Couldn't allocate memory for optimistic list.\n"ANSI_COLOR_RESET);
+        exit(0);
+    }
     my_list->head = NULL;
     my_list->tail = NULL;
     pthread_mutex_init(&list_lock, NULL);

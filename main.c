@@ -12,12 +12,17 @@ int bst_checksum = 0;
 pthread_barrier_t first_barrier;
 pthread_barrier_t second_barrier;
 pthread_barrier_t third_barrier;
+
+int debug = false;
+
 void* first(void *id){
     int i = 0;
     int song_id = 0;
     for(i = 0; i < number_of_threads; i++){
         song_id = ((i * number_of_threads) + (int)id);
-        //printf("I am thread: %d and going to insert:%d\n",(int)id,song_id);
+        if(debug){
+            printf("I am thread: %d and going to insert:%d\n",(int)id,song_id);
+        }
         insert(song_id,global_root,NULL);
     }
     pthread_barrier_wait(&first_barrier);
@@ -59,7 +64,9 @@ void* second(void* arg){
     int index = 1;
     int select = 0;
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
-        //printf("I am thread %d and starting to search (%d)..\n",id, i);
+        if(debug){
+            printf("I am thread %d and starting to search (%d)..\n",id, i);
+        }
         r = search(i,global_root,global_root->p);
         select = (id + index)%(N/2);
         enqueue(r,select);
@@ -99,8 +106,21 @@ void* second_check(void* arg){
 
 void* third(void* arg){
     int i = 0;
-    for(i = 0; i < number_of_threads; i++){
-        insert_list(i);
+    int id = (int)arg;
+    int N = number_of_threads;
+    int M = number_of_threads/2;
+    int index = 1;
+    int select = 0;
+    for(i = 0; i < M; i++){
+        //insert_list(i);
+        select = (id + index)%(N/2);
+        if(debug){
+            printf("I am thread (%d) and removed: %d.\n", id, dequeue(select));
+        }else{
+            dequeue(select);
+        }
+        
+        index += 1;
     }
     pthread_barrier_wait(&third_barrier);
     return NULL;
@@ -116,9 +136,12 @@ void* third_check(void* arg){
 }
 int main(int argc, char *argv[]){
     int i = 0;
-    if(argc != 2){
+    if(argc < 2){
         printf("Usage: a.out <thread count>\n");
         exit(0);
+    }
+    if(argc == 3){
+        debug = atoi(argv[2]);
     }
     init_tree();
     init_list();
@@ -155,7 +178,8 @@ int main(int argc, char *argv[]){
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
     }
-    third_check(NULL);
+    //third_check(NULL);
+    second_check(NULL);
 
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
