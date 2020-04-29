@@ -58,7 +58,7 @@ void insert(int songID, T_NODE* root, T_NODE* parent){
 }
 
 int search(int songID, T_NODE* root, T_NODE* parent){
-    T_NODE* node = NULL;
+    T_NODE* node = root;
     if(parent == NULL){
         pthread_mutex_lock(&tree_lock);
         if(global_root == NULL){
