@@ -55,7 +55,8 @@ void* second(void* arg){
     int id = (int) arg;
     int i = 0;
     int result = -1;
-    for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
+    for(i = 0; i <= 3; i++){
+    //for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
         printf("I am thread %d and starting search",id);
         result = search(i, global_root, NULL);
         printf("I am thread %d and stopped search",id);
