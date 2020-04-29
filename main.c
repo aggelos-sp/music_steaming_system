@@ -61,6 +61,7 @@ void* second(void* arg){
         printf("I am thread %d and starting to search (%d)..\n",id, i);
         result = delete_util(i, global_root);
         pthread_mutex_unlock(&result->lock);
+        if(result->p != NULL)
         pthread_mutex_unlock(&result->p->lock);
         printf("I am thread %d and stopped search\n",id);
         if(result != 0){
