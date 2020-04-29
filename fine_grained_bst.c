@@ -56,7 +56,47 @@ void insert(int songID, T_NODE* root, T_NODE* parent){
     }
 }
 
-T_NODE* search(int songID, T_NODE* root){
+int search(int songID, T_NODE* root, T_NODE* parent){
+    T_NODE* node = NULL;
+    if(parent == NULL){
+        pthread_mutex_lock(&tree_lock);
+        if(global_root == NULL){
+            printf(ANSI_COLOR_RED"Search failure empty tree.\n"ANSI_COLOR_RESET);
+            pthread_mutex_unlock(&tree_lock);
+            return -1;
+        }
+        pthread_mutex_lock(&global_root->lock);
+        node = global_root;
+        pthread_mutex_lock(&tree_lock);
+    }
+
+    if(node->songID < songID){
+        if(node->rc == NULL){
+            printf(ANSI_COLOR_RED"Search failure couldn't find node with id:%d\n"ANSI_COLOR_RESET,songID);
+            pthread_mutex_unlock(&node->lock);
+            return -1;
+        }else{
+            pthread_mutex_lock(&node->rc->lock);
+            pthread_mutex_unlock(&node->lock);
+            return search(songID, node->rc, node);
+        }
+    }else if(node->songID > songID){
+        if(node->lc == NULL){
+            printf(ANSI_COLOR_RED"Search failure couldn't find node with id:%d\n"ANSI_COLOR_RESET,songID);
+            pthread_mutex_unlock(&node->lock);
+            return -1;
+        }else{
+            pthread_mutex_lock(&node->lc->lock);
+            pthread_mutex_unlock(&node->lock);
+            return search(songID, node->lc, node);
+        }
+    }else{
+        pthread_mutex_unlock(&node->lock);
+        return songID;
+    }
+    return -1;
+}
+T_NODE* delete_util(int songID, T_NODE* root){
     if(root->songID == songID){
         return root;
     }else if(root->songID < songID){
@@ -70,7 +110,7 @@ T_NODE* search(int songID, T_NODE* root){
             }
             else{
                 pthread_mutex_unlock(&root->lock);
-                return search(songID, root->lc);
+                return delete_util(songID, root->lc);
             }
         }
     }else{
@@ -83,7 +123,7 @@ T_NODE* search(int songID, T_NODE* root){
                 return root->rc;
             }else{
                 pthread_mutex_unlock(&root->lock);
-                return search(songID, root->rc);
+                return delete_util(songID, root->rc);
             }
         }
     }
