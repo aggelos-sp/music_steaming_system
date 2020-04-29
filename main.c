@@ -58,7 +58,7 @@ void* second(void* arg){
     int i = 0;
     T_NODE *result = NULL;
     for(i = 0; i <= 3; i++){
-    for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
+    //for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
         printf("I am thread %d and starting search\n",id);
         pthread_mutex_lock(&global_root->lock);
         result = delete_util(i, global_root);
