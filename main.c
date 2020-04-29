@@ -93,6 +93,6 @@ int main(int argc, char *argv[]){
         pthread_join(my_threads[i],NULL);
     }
     pthread_barrier_destroy(&first_barrier);
-    pthread_attr_destroy(&second_barrier);
+    pthread_barrier_destroy(&second_barrier);
     return 0;
 }
