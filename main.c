@@ -17,7 +17,7 @@ void* first(void *id){
     int song_id = 0;
     for(i = 0; i < number_of_threads; i++){
         song_id = ((i * number_of_threads) + (int)id);
-        printf("I am thread: %d and going to insert:%d\n",(int)id,song_id);
+        //printf("I am thread: %d and going to insert:%d\n",(int)id,song_id);
         insert(song_id,global_root,NULL);
     }
     pthread_barrier_wait(&first_barrier);
@@ -28,7 +28,7 @@ void tree_counter(T_NODE* node)
     if (node == NULL) 
         return;
     tree_counter(node->lc); 
-    printf("Tree value : (%d)\n", node->songID);
+    //printf("Tree value : (%d)\n", node->songID);
     bst_node_number++;
     bst_checksum += node->songID; 
 
@@ -60,7 +60,7 @@ void* second(void* arg){
     int index = 1;
     int select = 0;
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
-        printf("I am thread %d and starting to search (%d)..\n",id, i);
+        //printf("I am thread %d and starting to search (%d)..\n",id, i);
         r = search(i,global_root,global_root->p);
         select = (id + index)%(N/2);
         enqueue(r,select);
@@ -95,8 +95,6 @@ void* second_check(void* arg){
     }else{
         printf(ANSI_COLOR_GREEN"total keysum check passed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET,correct_checksum,checksum);
     }
-    printf("Nodes = %d.\n", nodes_found);
-    printf("Check = %d.\n", checksum);
     return NULL;
 }
 
@@ -121,14 +119,18 @@ int main(int argc, char *argv[]){
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
     }
-    first_check(NULL);
+    pthread_create(&my_threads[0], NULL, first_check, NULL);
+    pthread_join(my_threads[0], NULL);
+    //first_check(NULL);
     for(i = 0; i < number_of_threads; i++){
         pthread_create(&my_threads[i], NULL, second,(void*)i);
     }
     for(i = 0; i < number_of_threads; i++){
         pthread_join(my_threads[i],NULL);
     }
-    second_check(NULL);
+    pthread_create(&my_threads[0], NULL, second_check, NULL);
+    pthread_join(my_threads[0], NULL);
+    //second_check(NULL);
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
     return 0;
