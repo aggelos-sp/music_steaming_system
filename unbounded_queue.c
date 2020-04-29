@@ -11,6 +11,7 @@ Q_NODE* create_queue_node(int songID){
     }
     node->songID = songID;
     node->next = NULL;
+    printf("Ready to return..\n");
     return node;
 }
 void init_queues(int M){
