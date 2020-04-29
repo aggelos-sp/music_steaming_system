@@ -2,6 +2,7 @@
 
 
 Q_NODE* create_queue_node(int songID){
+    printf(ANSI_COLOR_RED"Creating node..\n"ANSI_COLOR_RESET);
     Q_NODE* node;
     node = malloc(sizeof(Q_NODE));
     if(node == NULL){
@@ -20,7 +21,9 @@ void init_queues(int M){
         printf(ANSI_COLOR_RED"Couldn't allocate memory for queues.\n"ANSI_COLOR_RESET);
         exit(0);
     }
+    printf(ANSI_COLOR_RED"Allocate memory for q**.\n"ANSI_COLOR_RESET);
     for(i = 0; i < M; i++){
+        printf(ANSI_COLOR_RED"Starting allocation for queue:(%d)\n"ANSI_COLOR_RESET, i);
         sentinel = create_queue_node(-1);
         my_queues[i]->head = sentinel;
         my_queues[i]->tail = sentinel;
