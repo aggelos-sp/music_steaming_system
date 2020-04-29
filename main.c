@@ -1,5 +1,6 @@
 #include "fine_grained_bst.h"
 #include "unbounded_queue.h"
+#include "optimistic_list.h"
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN     "\x1b[32m"
@@ -10,7 +11,7 @@ int bst_node_number = 0;
 int bst_checksum = 0;
 pthread_barrier_t first_barrier;
 pthread_barrier_t second_barrier;
-
+pthread_barrier_t third_barrier;
 void* first(void *id){
     int i = 0;
     int song_id = 0;
@@ -96,6 +97,23 @@ void* second_check(void* arg){
     return NULL;
 }
 
+void* third(void* arg){
+    int i = 0;
+    for(i = 0; i < number_of_threads; i++){
+        insert_list(i);
+    }
+    pthread_barrier_wait(&third_barrier);
+    return NULL;
+}
+
+void* third_check(void* arg){
+    L_NODE* tmp = my_list->head;
+    while(tmp != NULL){
+        printf("Found (%d) in the list.\n", tmp->songID);
+        tmp = tmp->next;
+    }
+    return NULL;
+}
 int main(int argc, char *argv[]){
     int i = 0;
     if(argc != 2){
@@ -103,6 +121,7 @@ int main(int argc, char *argv[]){
         exit(0);
     }
     init_tree();
+    init_list();
     number_of_threads = atoi(argv[1]);
     printf("Number of threads : %d\n",number_of_threads);
     printf("---------------First Phase---------------\n");
@@ -130,7 +149,16 @@ int main(int argc, char *argv[]){
     pthread_create(&my_threads[0], NULL, second_check, NULL);
     pthread_join(my_threads[0], NULL);
     printf("---------------Third Phase---------------\n");
+    for(i = 0; i < number_of_threads; i++){
+        pthread_create(&my_threads[i], NULL, third, (void*)i);
+    }
+    for(i = 0; i < number_of_threads; i++){
+        pthread_join(my_threads[i],NULL);
+    }
+    third_check(NULL);
+
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
+    pthread_barrier_destroy(&third_barrier);
     return 0;
 }

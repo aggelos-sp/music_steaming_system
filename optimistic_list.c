@@ -12,7 +12,7 @@ L_NODE* create_list_node(int songID){
 }
 
 int validate(L_NODE* pred, L_NODE* curr){
-    L_NODE* tmp = list_head;
+    L_NODE* tmp = my_list->head;
     while(tmp->songID <= pred->songID){
         if(tmp == pred){
             if(pred->next == curr){
@@ -32,13 +32,13 @@ int insert_list(int songID){
     L_NODE* new_node;
     int result;
     int return_flag = false;
-    if(list_head == NULL){
+    if(my_list->head == NULL){
         pthread_mutex_lock(&list_lock);
-        list_head = create_list_node(songID);
+        my_list->head = create_list_node(songID);
         pthread_mutex_unlock(&list_lock);
     }
     while(true){
-        pred = list_head;
+        pred = my_list->head;
         curr = pred->next;
         while(curr->songID < songID){
             pred = curr;
@@ -66,7 +66,8 @@ int insert_list(int songID){
     }
 }
 
-void list_init(){
-    list_head = NULL;
+void init_list(){
+    my_list->head = NULL;
+    my_list->tail = NULL;
     pthread_mutex_init(&list_lock, NULL);
 }
