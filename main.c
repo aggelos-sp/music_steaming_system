@@ -95,7 +95,7 @@ int main(int argc, char *argv[]){
         pthread_create(&my_threads[i], NULL, second,(void*)i);
     }
     for(i = 0; i < number_of_threads; i++){
-        pthread_join(tids[i],NULL);
+        pthread_join(my_threads[i],NULL);
     }
     pthread_barrier_destroy(&first_barrier);
     pthread_barrier_destroy(&second_barrier);
