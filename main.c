@@ -59,7 +59,6 @@ void* second(void* arg){
     T_NODE *result = NULL;
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
         printf("I am thread %d and starting to search (%d)..\n",id, i);
-        pthread_mutex_lock(&global_root->lock);
         result = delete_util(i, global_root);
         printf("I am thread %d and stopped search\n",id);
         if(result != 0){
@@ -81,7 +80,6 @@ int main(int argc, char *argv[]){
     printf("Number of threads %d\n",number_of_threads);
     init_queues(number_of_threads/2);
     pthread_t my_threads[number_of_threads];
-    pthread_t tids[number_of_threads];
     /*Init barriers*/
     pthread_barrier_init(&first_barrier, NULL, number_of_threads);
     pthread_barrier_init(&second_barrier, NULL, number_of_threads);
@@ -94,9 +92,7 @@ int main(int argc, char *argv[]){
     }
     first_check(NULL);
     for(i = 0; i < number_of_threads; i++){
-        printf("Trying to start tid:%d\n",i);
-        pthread_create(&tids[i], NULL, second,(void*)i);
-        printf("Started tid:%d\n",i);
+        pthread_create(&my_threads[i], NULL, second,(void*)i);
     }
     for(i = 0; i < number_of_threads; i++){
         pthread_join(tids[i],NULL);
