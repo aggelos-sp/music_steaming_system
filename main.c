@@ -56,12 +56,12 @@ void* second(void* arg){
     int N = number_of_threads;
     int id = (int) arg;
     int i = 0;
-    int result = -1;
+    T_NODE *result = NULL;
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
         printf("I am thread %d and starting search\n",id);
-        result = search(i, global_root, NULL);
+        result = delete_util(i, global_root);
         printf("I am thread %d and stopped search",id);
-        if(result >= 0){
+        if(result->songID >= 0){
             printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result);
         }
     }
