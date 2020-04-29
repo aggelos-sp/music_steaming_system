@@ -6,16 +6,18 @@
 #define true 1
 #define false 0
 
-typedef struct optimistic_list {
-    L_NODE* head;
-    L_NODE* tail;
-}LIST;
+
 
 typedef struct list_node {
   int songID; 
   struct list_node *next;
   pthread_mutex_t lock;
 }L_NODE;
+
+typedef struct optimistic_list {
+    L_NODE* head;
+    L_NODE* tail;
+}LIST;
 
 LIST* my_list;
 pthread_mutex_t list_lock;
