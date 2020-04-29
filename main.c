@@ -28,7 +28,7 @@ void tree_counter(T_NODE* node)
     if (node == NULL) 
         return;
     tree_counter(node->lc); 
-    printf("Tree valuse : (%d)\n", node->songID);
+    printf("Tree value : (%d)\n", node->songID);
     bst_node_number++;
     bst_checksum += node->songID; 
 
@@ -57,9 +57,8 @@ void* second(void* arg){
     int id = (int) arg;
     int i = 0;
     T_NODE *result = NULL;
-    for(i = 0; i <= 3; i++){
-    //for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
-        printf("I am thread %d and starting search\n",id);
+    for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
+        printf("I am thread %d and starting to search (%d)..\n",id, i);
         pthread_mutex_lock(&global_root->lock);
         result = delete_util(i, global_root);
         pthread_mutex_unlock(&global_root->lock);
