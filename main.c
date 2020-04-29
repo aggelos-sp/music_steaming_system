@@ -28,7 +28,7 @@ void tree_counter(T_NODE* node)
     if (node == NULL) 
         return;
     tree_counter(node->lc); 
-
+    printf("Tree valuse : (%d)\n", node->songID);
     bst_node_number++;
     bst_checksum += node->songID; 
 
