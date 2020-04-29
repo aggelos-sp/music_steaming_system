@@ -62,7 +62,7 @@ void* second(void* arg){
         result = delete_util(i, global_root);
         printf("I am thread %d and stopped search",id);
         if(result->songID >= 0){
-            printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result);
+            printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result->songID);
         }
     }
     pthread_barrier_wait(&second_barrier);
