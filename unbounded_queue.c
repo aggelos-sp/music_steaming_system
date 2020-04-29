@@ -24,6 +24,11 @@ void init_queues(int M){
     }
     printf(ANSI_COLOR_RED"Allocate memory for q**.\n"ANSI_COLOR_RESET);
     for(i = 0; i < M; i++){
+        my_queues[i] = malloc(sizeof(QUEUE));
+        if(my_queues[i] == NULL){
+            printf(ANSI_COLOR_RED"Couldn't allocate memory for queue:(%d).\n"ANSI_COLOR_RESET,i);
+            exit(0);
+        }
         printf(ANSI_COLOR_RED"Starting allocation for queue:(%d)\n"ANSI_COLOR_RESET, i);
         Q_NODE* sentinel = create_queue_node(-1);
         my_queues[i]->head = sentinel;
