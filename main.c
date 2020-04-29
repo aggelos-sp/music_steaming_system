@@ -34,7 +34,7 @@ void tree_counter(T_NODE* node)
 
     tree_counter(node->rc); 
 } 
-void first_check(void * arg){
+void* first_check(void * arg){
     int N = number_of_threads;
     int correct_checksum = ((N*N)*(N-1)*(N+1))/2;
     tree_counter(global_root);
@@ -48,7 +48,7 @@ void first_check(void * arg){
     }else{
         printf(ANSI_COLOR_GREEN"total keysum check passed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET,correct_checksum,bst_checksum);
     }
-    
+    return NULL;
 }
 
 void* second(void* arg){
@@ -56,20 +56,15 @@ void* second(void* arg){
     int N = number_of_threads;
     int id = (int) arg;
     int i = 0;
-    //T_NODE *result = NULL;
     int r = -10;
+    int index = 1;
+    int select = 0;
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
         printf("I am thread %d and starting to search (%d)..\n",id, i);
         r = search(i,global_root,global_root->p);
-        printf("Found (%d)\n",r);
-        /*
-        result = delete_util(i, global_root);
-        pthread_mutex_unlock(&result->lock);
-        pthread_mutex_unlock(&result->p->lock);
-        printf("I am thread %d and stopped search\n",id);
-        if(result != 0){
-            printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result->songID);
-        }*/
+        select = (id + index)%(N/2);
+        enqueue(r,select);
+        index += 1;
     }
     pthread_barrier_wait(&second_barrier);
     return NULL;
