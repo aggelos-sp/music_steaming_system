@@ -75,13 +75,25 @@ void* second_check(void* arg){
     Q_NODE* tmp = NULL;
     int nodes_found = 0;
     int checksum = 0;
+    int N = number_of_threads;
+    int correct_checksum =  ((N*N)*(N-1)*(N+1))/2;
     for(i = 0; i < number_of_threads/2; i++){
-        tmp = my_queues[i]->head;
+        tmp = my_queues[i]->head->next;
         while(tmp != NULL){
             nodes_found += 1;
             checksum += tmp->songID;
             tmp = tmp->next;
         }
+    }
+    if(bst_node_number != (N * N)){
+        printf(ANSI_COLOR_RED"total size check failed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET, (N*N), nodes_found);
+    }else{
+        printf(ANSI_COLOR_GREEN"total size check passed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET, (N*N), nodes_found);
+    }
+    if(bst_checksum != correct_checksum){
+        printf(ANSI_COLOR_RED"total keysum check failed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET,correct_checksum,checksum);
+    }else{
+        printf(ANSI_COLOR_GREEN"total keysum check passed: (expected: %d, found: %d)\n"ANSI_COLOR_RESET,correct_checksum,checksum);
     }
     printf("Nodes = %d.\n", nodes_found);
     printf("Check = %d.\n", checksum);
