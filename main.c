@@ -56,16 +56,20 @@ void* second(void* arg){
     int N = number_of_threads;
     int id = (int) arg;
     int i = 0;
-    T_NODE *result = NULL;
+    //T_NODE *result = NULL;
+    int r = -10;
     for(i = (N*id); i <= ((N*id) + (N - 1)); i++){
         printf("I am thread %d and starting to search (%d)..\n",id, i);
+        r = search(i,global_root,global_root->p);
+        printf("Found (%d)\n",r);
+        /*
         result = delete_util(i, global_root);
-        //pthread_mutex_unlock(&result->lock);
+        pthread_mutex_unlock(&result->lock);
         pthread_mutex_unlock(&result->p->lock);
         printf("I am thread %d and stopped search\n",id);
         if(result != 0){
             printf(ANSI_COLOR_GREEN"Node with id = (%d) found.\n"ANSI_COLOR_RESET, result->songID);
-        }
+        }*/
     }
     pthread_barrier_wait(&second_barrier);
     return NULL;
