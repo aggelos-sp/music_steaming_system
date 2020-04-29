@@ -10,7 +10,7 @@ typedef struct list_node {
   struct list_node *next;
   pthread_mutex_t lock;
 }L_NODE;
-
+L_NODE* list_head;
 L_NODE* create_list_node(int songID);
 int validate(L_NODE* pred, L_NODE* curr);
 int insert_list(int songID);
